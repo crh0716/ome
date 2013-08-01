@@ -1,0 +1,59 @@
+<html>
+	<head>
+		<script>
+			window.addEventListener('load', function() {
+				var squares =
+					Array.prototype.slice.call(document.querySelectorAll('.square'));
+				squares.forEach(function(square) {
+					attachEvent(square);
+				});
+			});
+
+			var attachEvent = function(element) {
+				var isDragging;
+				var startX, startY;
+				var oriX, oriY;
+				element.addEventListener('touchstart', function(event) {
+					var touch = event.touches[0];
+					if (touch) {
+						isDragging = true;
+						startX = touch.clientX;
+						startY = touch.clientY;
+						oriX = parseInt(element.style.left == '' ? '0' : element.style.left);
+						oriY = parseInt(element.style.top == '' ? '0' : element.style.top);
+					}
+				});
+				element.addEventListener('touchmove', function(event) {
+					if (isDragging) {
+						var touch = event.touches[0];
+						if (touch) {
+							var diffX = touch.clientX - startX;
+							var diffY = touch.clientY - startY;
+							element.style.left = (oriX + diffX) + 'px';
+							element.style.top = (oriY + diffY) + 'px';
+						}
+					}
+				});
+				element.addEventListener('touchend', function(event) {
+					isDragging = false;
+				});
+			};
+		</script>
+		<style>
+			.square {
+				width: 100px;
+				height: 100px;
+				background-color: red;
+				border: solid 1px black;
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="square"></div>
+		<div class="square"></div>
+		<div class="square"></div>
+	</body>
+</html>
